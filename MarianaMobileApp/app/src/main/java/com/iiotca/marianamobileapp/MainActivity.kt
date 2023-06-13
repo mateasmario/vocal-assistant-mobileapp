@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance()
             conn =
-                DriverManager.getConnection("jdbc:mysql://database-1.ci4xeuccpn1x.eu-north-1.rds.amazonaws.com:3306/DB", "admin", "123456789")
+                DriverManager.getConnection("jdbc:mysql://database-1.ci4xeuccpn1x.eu-north-1.rds.amazonaws.com:3306/DB", "", "")
         } catch (ex: SQLException) {
             // handle any errors
             ex.printStackTrace()
