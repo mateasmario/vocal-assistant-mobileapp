@@ -6,6 +6,9 @@ import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ArrayAdapter
+import android.widget.ExpandableListView
+import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -52,19 +55,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.fab.setOnClickListener {
-            val tv1: TextView = findViewById(R.id.textview_first)
-            var dbOutput = getDbOutput()
-            tv1.text = getDbOutput()
+            getDbOutput()
         }
     }
 
-    fun getDbOutput(): CharSequence? {
+    fun getDbOutput() {
         var conn: Connection? = null
 
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance()
             conn =
-                DriverManager.getConnection("jdbc:mysql://database-1.ci4xeuccpn1x.eu-north-1.rds.amazonaws.com:3306/DB", "", "")
+                DriverManager.getConnection("jdbc:mysql://database-1.ci4xeuccpn1x.eu-north-1.rds.amazonaws.com:3306/DB", "admin", "123456789")
         } catch (ex: SQLException) {
             // handle any errors
             ex.printStackTrace()
@@ -86,9 +87,23 @@ class MainActivity : AppCompatActivity() {
                 resultset = stmt.resultSet
             }
 
+            val lv: ExpandableListView = findViewById(R.id.listview)
+
+            val header : MutableList<String> = ArrayList()
+            val body : MutableList<MutableList<String>> = ArrayList()
+
+            val arrayAdapter: ArrayAdapter<*>
+
             while (resultset!!.next()) {
-                result += "User: " + resultset.getString("QUESTION") + "\nMariana: " + resultset.getString("ANSWER") + "\n"
+                header.add(resultset.getString("QUESTION"))
+                val x = ArrayList<String>()
+                x.add(resultset.getString("ANSWER"))
+                body.add(x)
             }
+
+            lv.setAdapter(ExpandableListAdapter(this, header, body))
+
+
         } catch (ex: SQLException) {
             // handle any errors
             ex.printStackTrace()
@@ -121,8 +136,6 @@ class MainActivity : AppCompatActivity() {
                 conn = null
             }
         }
-
-        return result
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
