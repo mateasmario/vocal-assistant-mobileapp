@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Mariana Mobile App</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="titlebar_label">Mariana Vocal Assistant</string>
+
+    <string name="database_output">
+        There was a problem with the database output
+    </string>
+</resources>
